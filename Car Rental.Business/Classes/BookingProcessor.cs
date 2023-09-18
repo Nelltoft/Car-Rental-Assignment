@@ -18,9 +18,7 @@ public class BookingProcessor
 
     public IEnumerable<Customer> GetCustomers() 
     {
-        foreach (var c in _db.GetPersons())
-        {
-            yield return (Customer)c;
-        }
+        foreach (Customer c in _db.GetPersons())
+            yield return c;
     }
 }

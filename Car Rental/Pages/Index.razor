@@ -77,11 +77,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">@bp.GetCustomers()</th>
-                <td>Atreides</td>
-                <td>Paul</td>
-            </tr>
+            @foreach (var c in bp.GetCustomers())
+            {
+                <tr>
+                    <th scope="row">@c.SocialSecurityNumber</th>
+                    <td>@c.LastName</td>
+                    <td>@c.FirstName</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

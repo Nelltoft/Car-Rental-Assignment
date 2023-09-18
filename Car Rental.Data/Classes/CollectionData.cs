@@ -19,6 +19,7 @@ public class CollectionData : IData
     void SeedData() 
     {
         _persons.Add(new Customer("Paul", "Atreides", 234978));
+        _persons.Add(new Customer("Leit", "Kynes", 598234));
     }
 
     public IEnumerable<IPerson> GetPersons() => _persons;
