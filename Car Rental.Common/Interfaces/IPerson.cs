@@ -11,6 +11,4 @@ public interface IPerson
     string FirstName { get;}
     string LastName { get;}
     int SocialSecurityNumber { get;}
-
-    //void AddPerson(string firstName, string lastName, int socialSecurityNumber);
 }

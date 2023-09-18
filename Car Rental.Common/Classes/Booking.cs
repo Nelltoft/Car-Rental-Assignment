@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Car_Rental.Common.Classes
+namespace Car_Rental.Common.Classes;
+
+public class Booking
 {
-    internal class Booking
-    {
-    }
 }

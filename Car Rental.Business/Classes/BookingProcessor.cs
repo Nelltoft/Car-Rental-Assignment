@@ -21,4 +21,10 @@ public class BookingProcessor
         foreach (Customer c in _db.GetPersons())
             yield return c;
     }
+    public IEnumerable<IVehicle> GetVehicles()
+    {
+        foreach (IVehicle c in _db.GetVehicles())
+            yield return c;
+    }
+
 }
