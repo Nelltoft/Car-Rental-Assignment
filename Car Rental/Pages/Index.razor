@@ -1,0 +1,90 @@
+﻿@page "/"
+@using Car_Rental.Business.Classes
+@using Car_Rental.Common.Interfaces
+@using Car_Rental.Common.Enums
+@inject BookingProcessor bp
+
+<PageTitle>Car Rental</PageTitle>
+
+<h1>Car Rental Assignment</h1>
+
+<div class="row">
+    <h4>Vehicles</h4>
+    <table class="table border border-2 border-dark table-borderless w-50">
+        <thead>
+            <tr>
+                <th scope="col">RegNo</th>
+                <th scope="col">Make</th>
+                <th scope="col">Odometer</th>
+                <th scope="col">Cost Km</th>
+                <th scope="col">Vehicle Type</th>
+                <th scope="col">$ Day</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">GSB 630</th>
+                <td>Mitsubishi</td>
+                <td>15000</td>
+                <td>1.3</td>
+                <td>Suv</td>
+                <td>300</td>
+                <td><span class="badge text-bg-dark">Available</span></td>
+            </tr>        
+        </tbody>
+    </table>
+</div>
+<br />
+<div class="row">
+    <h4>Bookings</h4>
+    <table class="table border border-2 border-dark table-borderless w-50">
+        <thead>
+            <tr>
+                <th scope="col">RegNo</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Km Rented</th>
+                <th scope="col">Km Returned</th>
+                <th scope="col">Date Rented</th>
+                <th scope="col">Date Returned</th>
+                <th scope="col">Total Cost</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">GSB 630</th>
+                <td>Paul Atreides (234876)</td>
+                <td>15000</td>
+                <td>15300</td>
+                <td>9/1/2023</td>
+                <td>20/1/2023</td>
+                <td>something</td>
+                <td><span class="badge text-bg-success">closed</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br />
+<div class="row">
+    <h4>Customers</h4>
+    <table class="table border border-2 border-dark table-borderless w-25">
+        <thead>
+            <tr>
+                <th scope="col">SSN</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">First Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">@bp.GetCustomers()</th>
+                <td>Atreides</td>
+                <td>Paul</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
