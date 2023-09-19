@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Car_Rental.Common.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +9,14 @@ namespace Car_Rental.Common.Interfaces;
 
 public interface IBooking
 {
-    string RegNo { get; }
-    string Customer { get; }
-    string KmRented { get; }
-    string KmReturned { get; }
-    string DateRented { get; }
-    string DateReturned { get; }
-    string TotalCost { get; }
-    string Status { get; }
+    IVehicle Vehicle { get; }
+    IPerson Customer { get; }
+    int KmRented { get; }
+    int KmReturned { get; }
+    DateTime DateRented { get; }
+    DateTime DateReturned { get; }
+    double TotalCost { get; }
+    IVehicle Status { get; }
 
-
+    double GetTotalCost();
 }

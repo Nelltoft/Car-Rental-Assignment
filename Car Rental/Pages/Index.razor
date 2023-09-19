@@ -62,16 +62,47 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">GSB 630</th>
-                <td>Paul Atreides (234876)</td>
-                <td>15000</td>
-                <td>15300</td>
-                <td>9/1/2023</td>
-                <td>20/1/2023</td>
-                <td>something</td>
-                <td><span class="badge text-bg-success">closed</span></td>
-            </tr>
+            @foreach (var b in bp.GetBookings())
+            {
+                <tr>
+                    <th scope="row">@b.Vehicle.RegNO</th>
+                    <td>@b.Customer.LastName @b.Customer.FirstName (@b.Customer.SocialSecurityNumber)</td>
+                    <td>@b.KmRented</td>
+                    @if (b.Status.Status == VehicleStatuses.Available)
+                    {
+                        <td>@b.KmReturned</td>                        
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td>@b.DateRented.ToString("MM/dd/yyyy")</td>
+                    @if (b.Status.Status == VehicleStatuses.Available)
+                    {
+                        <td>@b.DateReturned.ToString("MM/dd/yyyy")</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (b.Status.Status == VehicleStatuses.Available)
+                    {
+                        <td>@b.GetTotalCost()</td>                        
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (b.Status.Status == VehicleStatuses.Available)
+                    {
+                        <td><span class="badge text-bg-success">Closed</span></td>
+                    }
+                    else
+                    {
+                        <td><span class="badge text-bg-danger">Open</span></td>
+                    }
+                </tr>
+            }
         </tbody>
     </table>
 </div>

@@ -14,6 +14,7 @@ public class CollectionData : IData
 {
     readonly List<IPerson> _persons = new List<IPerson>();
     readonly List<IVehicle> _vehicles = new List<IVehicle>();
+    readonly List<IBooking> _bookings = new List<IBooking>();
 
     public CollectionData() => SeedData();
 
@@ -27,14 +28,14 @@ public class CollectionData : IData
         _vehicles.Add(new Car("GSB 630", "Mitsubishi", 11000, 1.3, 200, VehicleTypes.Suv, VehicleStatuses.Available));
         _vehicles.Add(new Car("AXU 594", "Volvo", 35000, 1, 150, VehicleTypes.Combi, VehicleStatuses.Booked));
         _vehicles.Add(new Motorcycle("SSB 352", "Pulsar", 3000, 2.1, 400, VehicleStatuses.Available));
+
+        //Bookings
+        _bookings.Add(new Booking(_vehicles[1], _persons[1], _vehicles[1].Odometer, _vehicles[1].Odometer + 100, DateTime.Now, DateTime.Now, _vehicles[1]));
+        _bookings.Add(new Booking(_vehicles[2], _persons[0], _vehicles[2].Odometer, _vehicles[2].Odometer + 300, DateTime.Now, DateTime.Now, _vehicles[2]));
+        
     }
 
     public IEnumerable<IPerson> GetPersons() => _persons;
-
     public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = VehicleStatuses.Available) => _vehicles;
-
-    public IEnumerable<IPerson> GetBookings()
-    {
-        throw new NotImplementedException();
-    }
+    public IEnumerable<IBooking> GetBookings() => _bookings;
 }
