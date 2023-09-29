@@ -11,7 +11,7 @@
 <div class="row">
     <h4>Vehicles</h4>
     <table class="table border border-2 border-dark table-borderless w-50">
-        <thead>
+        <thead class="table-dark">
             <tr>
                 <th scope="col">RegNo</th>
                 <th scope="col">Make</th>
@@ -19,10 +19,30 @@
                 <th scope="col">Cost Km</th>
                 <th scope="col">Vehicle Type</th>
                 <th scope="col">$ Day</th>
+                <th scope="col">Action</th>
+                <th></th>
                 <th scope="col">Status</th>
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td><input @bind="regNo" type="text" class="form-control" placeholder="RegNo" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="make" type="text" class="form-control" placeholder="Make" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="odometer" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="kmCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td>
+                    <select @bind="type" class="form-select" aria-label="Default select example">
+                        @foreach (var item in bp.VehicleTypeNames)
+                        {
+                            <option>@item</option>
+                        }
+                    </select>
+                </td>
+                <td><input @bind="dayCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><button @onclick="(() => bp.AddVehicle(regNo, make, odometer, kmCost, dayCost, type))" type="button" class="btn btn-outline-success">Add</button></td>
+                <td></td>
+                <td>Processing</td>
+            </tr>
             @foreach (var v in bp.GetVehicles())
             {
                 <tr>
@@ -32,6 +52,15 @@
                     <td>@v.KmCost</td>
                     <td>@v.Type</td>
                     <td>@v.DayCost</td>
+                    <td>
+                        <select class="form-select" aria-label="Default select example">
+                            @foreach (var p in bp.GetCustomers())
+                            {
+                                <option>@p.LastName @p.FirstName (@p.SocialSecurityNumber)</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button type="button" class="btn btn-outline-success">Rent</button></td>
                     @if (v.Status == VehicleStatuses.Available)
                     {
                         <td><span class="badge text-bg-dark">@v.Status</span></td>                        
@@ -49,7 +78,7 @@
 <div class="row">
     <h4>Bookings</h4>
     <table class="table border border-2 border-dark table-borderless w-50">
-        <thead>
+        <thead class="table-dark">
             <tr>
                 <th scope="col">RegNo</th>
                 <th scope="col">Customer</th>
@@ -61,7 +90,7 @@
                 <th scope="col">Status</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody>            
             @foreach (var b in bp.GetBookings())
             {
                 <tr>
@@ -102,33 +131,53 @@
                         <td><span class="badge text-bg-danger">Open</span></td>
                     }
                 </tr>
-            }
+            } 
         </tbody>
     </table>
 </div>
 <br />
 <div class="row">
     <h4>Customers</h4>
-    <table class="table border border-2 border-dark table-borderless w-25">
-        <thead>
+    <table class="table border border-2 border-dark w-25">
+        <thead class="table-dark">
             <tr>
                 <th scope="col">SSN</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">First Name</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td><input @bind="ssn" type="text" class="form-control" placeholder="SSN" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="lastName" type="text" class="form-control" placeholder="Last Name" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="firstName" type="text" class="form-control" placeholder="First Name" aria-describedby="addon-wrapping"></td>
+                <td><button @onclick="(() => bp.AddCustomer(ssn, firstName, lastName))" type="button" class="btn btn-outline-success">Add</button></td>
+            </tr>
             @foreach (var c in bp.GetCustomers())
             {
                 <tr>
                     <th scope="row">@c.SocialSecurityNumber</th>
                     <td>@c.LastName</td>
                     <td>@c.FirstName</td>
+                    <td></td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+@code
+{
+    public int ssn;
+    public string firstName = String.Empty;
+    public string lastName = String.Empty;
 
+    public string regNo = String.Empty;
+    public string make = String.Empty;
+    public int odometer;
+    public double kmCost;
+    public int dayCost;
+    public VehicleTypes type;
+}
 
 

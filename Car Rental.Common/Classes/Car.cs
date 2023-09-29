@@ -10,6 +10,7 @@ namespace Car_Rental.Common.Classes;
 
 public class Car : IVehicle
 {
+    public int Id { get; private set; }
     public string RegNO { get; private set; } = string.Empty;
 
     public string Make { get; private set; } = string.Empty;
@@ -24,7 +25,7 @@ public class Car : IVehicle
 
     public VehicleStatuses Status { get; private set; }
 
-    public Car(string regNo, string make, int odometer, double kmCost, int dayCost, VehicleTypes type, VehicleStatuses status)
-        => (RegNO, Make, Odometer, KmCost, DayCost, Type, Status) = (regNo, make, odometer, kmCost, dayCost, type, status);
+    public Car(int id, string regNo, string make, int odometer, double kmCost, int dayCost, VehicleTypes type, VehicleStatuses status)
+        => (Id, RegNO, Make, Odometer, KmCost, DayCost, Type, Status) = (id, regNo, make, odometer, kmCost, dayCost, type, status);
 
 }

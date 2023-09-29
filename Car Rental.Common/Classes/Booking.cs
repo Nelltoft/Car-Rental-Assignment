@@ -9,6 +9,7 @@ namespace Car_Rental.Common.Classes;
 
 public class Booking : IBooking
 {
+    public int Id { get; private set; }
     public IVehicle Vehicle { get; private set; }
 
     public IPerson Customer { get; private set; }
@@ -25,9 +26,9 @@ public class Booking : IBooking
 
     public IVehicle Status { get; private set; }
 
-    public Booking(IVehicle vehicle, IPerson customer, int kmRented, int kmReturned, DateTime dateRented, DateTime dateReturned, IVehicle status)
-        => (Vehicle, Customer, KmRented, KmReturned, DateRented, DateReturned, Status)
-        = (vehicle, customer, kmRented, kmReturned, dateRented, dateReturned, status);
+    public Booking(int id, IVehicle vehicle, IPerson customer, int kmRented, int kmReturned, DateTime dateRented, DateTime dateReturned, IVehicle status)
+        => (Id, Vehicle, Customer, KmRented, KmReturned, DateRented, DateReturned, Status)
+        = (id, vehicle, customer, kmRented, kmReturned, dateRented, dateReturned, status);
 
     double IBooking.GetTotalCost()
     {
