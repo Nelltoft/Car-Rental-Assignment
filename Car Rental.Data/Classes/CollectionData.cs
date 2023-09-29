@@ -50,11 +50,21 @@ public class CollectionData : IData
      
     public T? Single<T>(Expression<Func<T, bool>>? expression)
     {
-        /*
+
         var collections = GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
             .FirstOrDefault(f => f.FieldType == typeof(List<T>) && f.IsInitOnly)
-            ?? throw new InvalidOperationException("Unsupported type");*/
-        throw new NotImplementedException();
+            ?? throw new InvalidOperationException("Unsupported type");
+
+        List<T>? result = new();
+
+        result = collections.GetValue(this) as List<T>;
+        
+        if(expression is null) return default;
+
+        if (result is not null)           
+            return result.Single(expression.Compile());
+
+        throw new InvalidOperationException("Something went wrong.");
     }
 
     public void Add<T>(T item)

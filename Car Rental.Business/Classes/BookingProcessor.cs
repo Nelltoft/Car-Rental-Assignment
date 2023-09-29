@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,14 +27,12 @@ public class BookingProcessor
         {
             yield return p;
         }
-    }
-    /*
+    }    
     public IPerson? GetPerson(int ssn) 
     {
-        int test = _db.Get<IPerson>(p => p.SocialSecurityNumber == ssn);
- 
-    }
-    */
+        var person = _db.Single<IPerson>(p => p.SocialSecurityNumber == ssn);
+        return person;
+    }    
     public IEnumerable<IVehicle> GetVehicles()
     {
         foreach (IVehicle v in _db.Get<IVehicle>(null))
@@ -41,23 +40,33 @@ public class BookingProcessor
             yield return v;
         }
     }
+    public IVehicle? GetVehicle(int vehicleId) 
+    {
+        var vehicle = _db.Single<IVehicle>(v => v.Id == vehicleId);
+        return vehicle;
+    }
+    public IVehicle? GetVehicle(string regNo) 
+    {
+        var vehicle = _db.Single<IVehicle>(v => v.RegNO == regNo);
+        return vehicle;
+    }
     public IEnumerable<IBooking> GetBookings()
     {
         foreach (IBooking b in _db.Get<IBooking>(null))
         {
             yield return b;
         }
-    }
-    /*
+    }    
     public IBooking GetBooking(int vehicleId) 
     {
-        foreach (IBooking b in _db.Get<IBooking>(b => b.Id == vehicleId))
-        {
-            return b;
-        }
-        throw new NotImplementedException();
+        var booking = _db.Single<IBooking>(b => b.Id == vehicleId);
+
+        if (booking is not null)
+            return booking;
+
+        throw new InvalidOperationException("Something went wrong");
     }
-    */
+    
     public void AddVehicle(string regNo, string make, int odometer, double kmCost, int dayCost, VehicleTypes type)
     {
         if (type == VehicleTypes.Motorcyle)
@@ -70,7 +79,10 @@ public class BookingProcessor
     {
         _db.Add<IPerson>(new Customer(_db.NextPersonId, firstName, lastName, socialSecurityNumber));
     }
-    //public async Task<IBooking> RentVehicle(int vehicleId, int customerId) 
+    public async Task<IBooking> RentVehicle(int vehicleId, int customerId) 
+    {
+        
+    }
     public VehicleTypes GetVehicleType(string name) => _db.GetVehicleType(name);
 
 
