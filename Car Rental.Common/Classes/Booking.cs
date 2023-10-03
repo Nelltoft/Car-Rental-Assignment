@@ -1,4 +1,5 @@
-﻿using Car_Rental.Common.Interfaces;
+﻿using Car_Rental.Common.Extensions;
+using Car_Rental.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ public class Booking : IBooking
 
     public IPerson Customer { get; private set; }
 
-    public int KmRented { get; private set; }
+    public double KmRented { get; private set; }
 
-    public int KmReturned { get; private set; }
+    public double KmReturned { get; set; }
 
     public DateTime DateRented { get; private set; }
 
@@ -24,9 +25,11 @@ public class Booking : IBooking
 
     public double TotalCost { get; private set; }
 
-    public IVehicle Status { get; private set; }
+    //public IVehicle Status { get; private set; }
 
-    public Booking(int id, IVehicle vehicle, IPerson customer, int kmRented, int kmReturned, DateTime dateRented, DateTime dateReturned, IVehicle status)
+    public bool Status { get; set; }
+
+    public Booking(int id, IVehicle vehicle, IPerson customer, double kmRented, double kmReturned, DateTime dateRented, DateTime dateReturned, bool status)
         => (Id, Vehicle, Customer, KmRented, KmReturned, DateRented, DateReturned, Status)
         = (id, vehicle, customer, kmRented, kmReturned, dateRented, dateReturned, status);
 
@@ -34,9 +37,7 @@ public class Booking : IBooking
     {
         TotalCost = 0;
         double kmDifference = KmReturned - KmRented;
-        double daysRented = (DateReturned.Date - DateRented.Date).Days + 1;
-        TotalCost = (kmDifference * Vehicle.KmCost) + (daysRented * Vehicle.DayCost);
+        TotalCost = (kmDifference * Vehicle.KmCost) + (VehicleExtensions.Duration(DateRented, DateReturned) * Vehicle.DayCost);
         return TotalCost;
-
     }
 }

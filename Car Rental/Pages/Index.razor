@@ -8,9 +8,21 @@
 
 <h1>Car Rental Assignment</h1>
 
-<div class="row">
+@if (bp.ShowVehicleAlert)
+{
+    <div class="alert alert-danger w-25" role="alert" style="@bp.ShowVehicleAlertMessage">
+        You must fill in all vehicle information before adding a vehicle!
+    </div>
+}
+@if (bp.ShowRentAlert)
+{
+    <div class="alert alert-danger w-25" role="alert" style="@bp.ShowRentAlertMessage">
+        Choose a customer to rent the car!
+    </div>
+}
+<div class="row" style="@bp.ProcessingInProgress">
     <h4>Vehicles</h4>
-    <table class="table border border-2 border-dark table-borderless w-50">
+    <table class="table border border-2 border-dark table-borderless w-75">
         <thead class="table-dark">
             <tr>
                 <th scope="col">RegNo</th>
@@ -26,22 +38,22 @@
         </thead>
         <tbody>
             <tr>
-                <td><input @bind="regNo" type="text" class="form-control" placeholder="RegNo" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="make" type="text" class="form-control" placeholder="Make" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="odometer" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="kmCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.regNo" type="text" class="form-control" placeholder="RegNo" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.make" type="text" class="form-control" placeholder="Make" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.odometer" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.kmCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
                 <td>
-                    <select @bind="type" class="form-select" aria-label="Default select example">
+                    <select @bind="bp.type" class="form-select" aria-label="Default select example">
                         @foreach (var item in bp.VehicleTypeNames)
                         {
                             <option>@item</option>
                         }
                     </select>
                 </td>
-                <td><input @bind="dayCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
-                <td><button @onclick="(() => bp.AddVehicle(regNo, make, odometer, kmCost, dayCost, type))" type="button" class="btn btn-outline-success">Add</button></td>
+                <td><input @bind="bp.dayCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><button @onclick="(() => bp.AddVehicle(bp.regNo, bp.make, bp.odometer, bp.kmCost, bp.dayCost, bp.type))" type="button" class="btn btn-outline-success">Add</button></td>
                 <td></td>
-                <td>Processing</td>
+                <td><span class="badge text-bg-warning" style="@bp.DisplayProcessing">processing</span></td>
             </tr>
             @foreach (var v in bp.GetVehicles())
             {
@@ -52,15 +64,25 @@
                     <td>@v.KmCost</td>
                     <td>@v.Type</td>
                     <td>@v.DayCost</td>
-                    <td>
-                        <select class="form-select" aria-label="Default select example">
-                            @foreach (var p in bp.GetCustomers())
-                            {
-                                <option>@p.LastName @p.FirstName (@p.SocialSecurityNumber)</option>
-                            }
-                        </select>
-                    </td>
-                    <td><button type="button" class="btn btn-outline-success">Rent</button></td>
+                    @if (v.Status == VehicleStatuses.Booked)
+                    {
+                        <td><input @bind="bp.kmReturned" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                        <td><button @onclick="(() => bp.ReturnVehicle(v.Id, bp.kmReturned))" type="button" class="btn btn-outline-success">Return</button></td>
+                    }
+                    else
+                    {
+                        <td>
+                            <select @bind="bp.customerId" class="form-select" aria-label="Default select example">
+                                @foreach (var p in bp.GetCustomers())
+                                {
+                                    <option value="@p.Id">@p.LastName @p.FirstName (@p.SocialSecurityNumber)</option>
+                                }
+                            </select>
+                        </td>
+                        <td>                         
+                            <button @onclick="(() => bp.RentVehicle(v.Id, bp.customerId))" type="button" class="btn btn-outline-success">Rent</button>
+                        </td>                    
+                    }
                     @if (v.Status == VehicleStatuses.Available)
                     {
                         <td><span class="badge text-bg-dark">@v.Status</span></td>                        
@@ -97,37 +119,20 @@
                     <th scope="row">@b.Vehicle.RegNO</th>
                     <td>@b.Customer.LastName @b.Customer.FirstName (@b.Customer.SocialSecurityNumber)</td>
                     <td>@b.KmRented</td>
-                    @if (b.Status.Status == VehicleStatuses.Available)
+                    @if (!b.Status)
                     {
                         <td>@b.KmReturned</td>                        
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-                    <td>@b.DateRented.ToString("MM/dd/yyyy")</td>
-                    @if (b.Status.Status == VehicleStatuses.Available)
-                    {
+                        <td>@b.DateRented.ToString("MM/dd/yyyy")</td>
                         <td>@b.DateReturned.ToString("MM/dd/yyyy")</td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-                    @if (b.Status.Status == VehicleStatuses.Available)
-                    {
                         <td>@b.GetTotalCost()</td>                        
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-                    @if (b.Status.Status == VehicleStatuses.Available)
-                    {
                         <td><span class="badge text-bg-success">Closed</span></td>
                     }
                     else
                     {
+                        <td></td>
+                        <td>@b.DateRented.ToString("MM/dd/yyyy")</td>
+                        <td></td>
+                        <td></td>
                         <td><span class="badge text-bg-danger">Open</span></td>
                     }
                 </tr>
@@ -136,6 +141,12 @@
     </table>
 </div>
 <br />
+@if (bp.ShowCustomerAlert)
+{
+    <div class="alert alert-danger w-25" role="alert" style="@bp.ShowCustomerAlertMessage">
+        You must fill in all customer information before adding a customer!
+    </div>
+}
 <div class="row">
     <h4>Customers</h4>
     <table class="table border border-2 border-dark w-25">
@@ -149,10 +160,10 @@
         </thead>
         <tbody>
             <tr>
-                <td><input @bind="ssn" type="text" class="form-control" placeholder="SSN" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="lastName" type="text" class="form-control" placeholder="Last Name" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="firstName" type="text" class="form-control" placeholder="First Name" aria-describedby="addon-wrapping"></td>
-                <td><button @onclick="(() => bp.AddCustomer(ssn, firstName, lastName))" type="button" class="btn btn-outline-success">Add</button></td>
+                <td><input @bind="bp.ssn" type="text" class="form-control" placeholder="SSN" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.lastName" type="text" class="form-control" placeholder="Last Name" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.firstName" type="text" class="form-control" placeholder="First Name" aria-describedby="addon-wrapping"></td>
+                <td><button @onclick="(() => bp.AddCustomer(bp.ssn, bp.firstName, bp.lastName))" type="button" class="btn btn-outline-success">Add</button></td>
             </tr>
             @foreach (var c in bp.GetCustomers())
             {
@@ -166,18 +177,6 @@
         </tbody>
     </table>
 </div>
-@code
-{
-    public int ssn;
-    public string firstName = String.Empty;
-    public string lastName = String.Empty;
 
-    public string regNo = String.Empty;
-    public string make = String.Empty;
-    public int odometer;
-    public double kmCost;
-    public int dayCost;
-    public VehicleTypes type;
-}
 
 

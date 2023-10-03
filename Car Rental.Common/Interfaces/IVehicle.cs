@@ -12,9 +12,9 @@ public interface IVehicle
     int Id { get; }
     string RegNO { get;}
     string Make { get;}
-    int Odometer { get;}
+    double Odometer { get; set; }
     double KmCost  { get;}
     int DayCost { get;}
     VehicleTypes Type { get;}
-    VehicleStatuses Status { get; }
+    VehicleStatuses Status { get; set; }
 }

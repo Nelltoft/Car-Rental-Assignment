@@ -114,11 +114,11 @@ public class CollectionData : IData
         //Vehicles
         _vehicles.Add(new Car(NextVehicleId, "GSB 630", "Mitsubishi", 11000, 1.3, 200, VehicleTypes.Suv, VehicleStatuses.Available));
         _vehicles.Add(new Car(NextVehicleId, "AXU 594", "Volvo", 35000, 1, 150, VehicleTypes.Combi, VehicleStatuses.Booked));
-        _vehicles.Add(new Motorcycle(NextVehicleId, "SSB 352", "Pulsar", 3000, 2.1, 400, VehicleStatuses.Available));
+        _vehicles.Add(new Motorcycle(NextVehicleId, "SSB 352", "Pulsar", 3000, 2.1, 400, VehicleTypes.Motorcyle, VehicleStatuses.Available));
 
         //Bookings
-        _bookings.Add(new Booking(NextBookingId, _vehicles[1], _persons[1], _vehicles[1].Odometer, _vehicles[1].Odometer + 100, DateTime.Now, DateTime.Now, _vehicles[1]));
-        _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], _vehicles[2].Odometer, _vehicles[2].Odometer + 300, DateTime.Now, DateTime.Now, _vehicles[2]));        
+        _bookings.Add(new Booking(NextBookingId, _vehicles[1], _persons[1], _vehicles[1].Odometer, 0, DateTime.Now, DateTime.Now, true));
+        _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], _vehicles[2].Odometer, _vehicles[2].Odometer + 300, DateTime.Now, DateTime.Now, false));        
     }
     
     #region Code for G Assignment

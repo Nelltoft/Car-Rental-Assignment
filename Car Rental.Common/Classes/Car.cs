@@ -8,24 +8,11 @@ using System.Threading.Tasks;
 
 namespace Car_Rental.Common.Classes;
 
-public class Car : IVehicle
+public class Car :  Vehicle
 {
-    public int Id { get; private set; }
-    public string RegNO { get; private set; } = string.Empty;
-
-    public string Make { get; private set; } = string.Empty;
-
-    public int Odometer { get; private set; }
-
-    public double KmCost { get; private set; }
-
-    public int DayCost { get; private set; }
-
-    public VehicleTypes Type { get; private set; }
-
-    public VehicleStatuses Status { get; private set; }
-
-    public Car(int id, string regNo, string make, int odometer, double kmCost, int dayCost, VehicleTypes type, VehicleStatuses status)
-        => (Id, RegNO, Make, Odometer, KmCost, DayCost, Type, Status) = (id, regNo, make, odometer, kmCost, dayCost, type, status);
-
+    public Car(int id, string regNo, string make, double odometer, double kmCost, int dayCost, VehicleTypes type, VehicleStatuses status)
+        : base(id, regNo, make, odometer, kmCost, dayCost, type, status)
+    {
+        
+    }
 }
