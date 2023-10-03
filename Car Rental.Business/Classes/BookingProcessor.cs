@@ -1,15 +1,7 @@
 ﻿using Car_Rental.Common.Classes;
 using Car_Rental.Common.Enums;
 using Car_Rental.Common.Interfaces;
-using Car_Rental.Data.Classes;
 using Car_Rental.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Car_Rental.Business.Classes;
@@ -17,21 +9,21 @@ namespace Car_Rental.Business.Classes;
 public class BookingProcessor
 {
     private readonly IData _db;
-    public int kmReturned;
-    public int ssn;
-    public int customerId;
-    public int odometer;
-    public int dayCost;
-    public double kmCost;
-    public string firstName = String.Empty;
-    public string lastName = String.Empty;
-    public string regNo = String.Empty;
-    public string make = String.Empty;
+    public int KmReturned;
+    public int Ssn;
+    public int CustomerId;
+    public int Odometer;
+    public int DayCost;
+    public double KmCost;
+    public string FirstName = String.Empty;
+    public string LastName = String.Empty;
+    public string RegNo = String.Empty;
+    public string Make = String.Empty;
     public bool InProgress = false;
     public bool ShowCustomerAlert = false;
     public bool ShowVehicleAlert = false;
     public bool ShowRentAlert = false;
-    public VehicleTypes type;
+    public VehicleTypes Type;
 
     public BookingProcessor(IData db) => _db = db;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
@@ -48,12 +40,12 @@ public class BookingProcessor
         {
             yield return p;
         }
-    }    
-    public IPerson? GetPerson(int ssn) 
+    }
+    public IPerson? GetPerson(int ssn)
     {
         var person = _db.Single<IPerson>(p => p.SocialSecurityNumber == ssn);
         return person;
-    }    
+    }
     public IEnumerable<IVehicle> GetVehicles()
     {
         foreach (IVehicle v in _db.Get<IVehicle>(null))
@@ -61,12 +53,12 @@ public class BookingProcessor
             yield return v;
         }
     }
-    public IVehicle? GetVehicle(int vehicleId) 
+    public IVehicle? GetVehicle(int vehicleId)
     {
         var vehicle = _db.Single<IVehicle>(v => v.Id == vehicleId);
         return vehicle;
     }
-    public IVehicle? GetVehicle(string regNo) 
+    public IVehicle? GetVehicle(string regNo)
     {
         var vehicle = _db.Single<IVehicle>(v => v.RegNO == regNo);
         return vehicle;
@@ -77,8 +69,8 @@ public class BookingProcessor
         {
             yield return b;
         }
-    }    
-    public IBooking GetBooking(int vehicleId) 
+    }
+    public IBooking GetBooking(int vehicleId)
     {
         var booking = _db.Single<IBooking>(b => b.Id == vehicleId);
 
@@ -87,7 +79,6 @@ public class BookingProcessor
 
         throw new InvalidOperationException("Something went wrong");
     }
-    
     public void AddVehicle(string regNo, string make, int odometer, double kmCost, int dayCost, VehicleTypes type)
     {
         if (regNo == String.Empty || make == String.Empty || odometer < 0 || kmCost == 0 || dayCost < 0)
@@ -108,7 +99,7 @@ public class BookingProcessor
             }
         }
     }
-    public void AddCustomer(int socialSecurityNumber, string firstName, string lastName) 
+    public void AddCustomer(int socialSecurityNumber, string firstName, string lastName)
     {
         if (socialSecurityNumber == 0 || firstName == String.Empty || lastName == String.Empty)
         {
@@ -120,7 +111,7 @@ public class BookingProcessor
             ShowCustomerAlert = false;
         }
     }
-    public async Task RentVehicle(int vehicleId, int customerId) 
+    public async Task RentVehicle(int vehicleId, int customerId)
     {
         if (vehicleId < 1 || customerId < 1)
         {
@@ -136,18 +127,18 @@ public class BookingProcessor
             {
                 vehicle.Status = VehicleStatuses.Booked;
                 _db.Add<IBooking>(new Booking(_db.NextBookingId, vehicle, customer, vehicle.Odometer, vehicle.Odometer, DateTime.Now, DateTime.Now, true));
-                InProgress = false; 
+                InProgress = false;
             }
             ShowRentAlert = false;
         }
-    }    
-    public async Task ReturnVehicle(int vehicleId, int distance) 
+    }
+    public async Task ReturnVehicle(int vehicleId, int distance)
     {
         InProgress = true;
         await Task.Delay(5000);
         IVehicle? vehicle = _db.Single<IVehicle>(v => v.Id == vehicleId);
         IBooking? booking = _db.Single<IBooking>(b => b.Vehicle == vehicle && b.TotalCost < 1);
-        if(vehicle is not null && booking is not null) 
+        if (vehicle is not null && booking is not null)
         {
             vehicle.Status = VehicleStatuses.Available;
             vehicle.Odometer = vehicle.Odometer + distance;
@@ -155,29 +146,7 @@ public class BookingProcessor
             booking.Status = false;
             InProgress = false;
         }
-        kmReturned = 0;
+        KmReturned = 0;
 
     }
-
-    #region Code for G Assignment
-    /*
-    public IEnumerable<Customer> GetCustomers() 
-    {
-        foreach (Customer c in _db.GetPersons())
-            yield return c;
-    }
-    public IEnumerable<IVehicle> GetVehicles()
-    {
-        foreach (IVehicle v in _db.GetVehicles())
-            yield return v;
-    }
-    
-    public IEnumerable<IBooking> GetBookings()
-    {
-        foreach (IBooking b in _db.GetBookings())
-            yield return b;
-    }
-    */
-    #endregion
-
 }

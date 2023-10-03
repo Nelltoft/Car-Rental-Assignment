@@ -38,22 +38,22 @@
         </thead>
         <tbody>
             <tr>
-                <td><input @bind="bp.regNo" type="text" class="form-control" placeholder="RegNo" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="bp.make" type="text" class="form-control" placeholder="Make" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="bp.odometer" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="bp.kmCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.RegNo" type="text" class="form-control" placeholder="RegNo" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.Make" type="text" class="form-control" placeholder="Make" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.Odometer" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.KmCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
                 <td>
-                    <select @bind="bp.type" class="form-select" aria-label="Default select example">
+                    <select @bind="bp.Type" class="form-select" aria-label="Default select example">
                         @foreach (var item in bp.VehicleTypeNames)
                         {
                             <option>@item</option>
                         }
                     </select>
                 </td>
-                <td><input @bind="bp.dayCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
-                <td><button @onclick="(() => bp.AddVehicle(bp.regNo, bp.make, bp.odometer, bp.kmCost, bp.dayCost, bp.type))" type="button" class="btn btn-outline-success">Add</button></td>
+                <td><input @bind="bp.DayCost" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                <td><button @onclick="(() => bp.AddVehicle(bp.RegNo, bp.Make, bp.Odometer, bp.KmCost, bp.DayCost, bp.Type))" type="button" class="btn btn-outline-success">Add</button></td>
                 <td></td>
-                <td><span class="badge text-bg-warning" style="@bp.DisplayProcessing">processing</span></td>
+                <td><span class="badge text-bg-warning" style="@bp.DisplayProcessing">Processing</span></td>
             </tr>
             @foreach (var v in bp.GetVehicles())
             {
@@ -66,13 +66,13 @@
                     <td>@v.DayCost</td>
                     @if (v.Status == VehicleStatuses.Booked)
                     {
-                        <td><input @bind="bp.kmReturned" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
-                        <td><button @onclick="(() => bp.ReturnVehicle(v.Id, bp.kmReturned))" type="button" class="btn btn-outline-success">Return</button></td>
+                        <td><input @bind="bp.KmReturned" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                        <td><button @onclick="(() => bp.ReturnVehicle(v.Id, bp.KmReturned))" type="button" class="btn btn-outline-success">Return</button></td>
                     }
                     else
                     {
                         <td>
-                            <select @bind="bp.customerId" class="form-select" aria-label="Default select example">
+                            <select @bind="bp.CustomerId" class="form-select" aria-label="Default select example">
                                 @foreach (var p in bp.GetCustomers())
                                 {
                                     <option value="@p.Id">@p.LastName @p.FirstName (@p.SocialSecurityNumber)</option>
@@ -80,7 +80,7 @@
                             </select>
                         </td>
                         <td>                         
-                            <button @onclick="(() => bp.RentVehicle(v.Id, bp.customerId))" type="button" class="btn btn-outline-success">Rent</button>
+                            <button @onclick="(() => bp.RentVehicle(v.Id, bp.CustomerId))" type="button" class="btn btn-outline-success">Rent</button>
                         </td>                    
                     }
                     @if (v.Status == VehicleStatuses.Available)
@@ -160,10 +160,10 @@
         </thead>
         <tbody>
             <tr>
-                <td><input @bind="bp.ssn" type="text" class="form-control" placeholder="SSN" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="bp.lastName" type="text" class="form-control" placeholder="Last Name" aria-describedby="addon-wrapping"></td>
-                <td><input @bind="bp.firstName" type="text" class="form-control" placeholder="First Name" aria-describedby="addon-wrapping"></td>
-                <td><button @onclick="(() => bp.AddCustomer(bp.ssn, bp.firstName, bp.lastName))" type="button" class="btn btn-outline-success">Add</button></td>
+                <td><input @bind="bp.Ssn" type="text" class="form-control" placeholder="SSN" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.LastName" type="text" class="form-control" placeholder="Last Name" aria-describedby="addon-wrapping"></td>
+                <td><input @bind="bp.FirstName" type="text" class="form-control" placeholder="First Name" aria-describedby="addon-wrapping"></td>
+                <td><button @onclick="(() => bp.AddCustomer(bp.Ssn, bp.FirstName, bp.LastName))" type="button" class="btn btn-outline-success">Add</button></td>
             </tr>
             @foreach (var c in bp.GetCustomers())
             {

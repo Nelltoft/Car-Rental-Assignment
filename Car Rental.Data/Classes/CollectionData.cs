@@ -2,16 +2,8 @@
 using Car_Rental.Common.Enums;
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Car_Rental.Data.Classes;
 
@@ -41,13 +33,13 @@ public class CollectionData : IData
         {
             if (expression is not null)
             {
-                return result.Where(expression.Compile()).ToList();            
+                return result.Where(expression.Compile()).ToList();
             }
             return result;
         }
         throw new InvalidOperationException("Something went wrong");
     }
-     
+
     public T? Single<T>(Expression<Func<T, bool>>? expression)
     {
 
@@ -58,10 +50,10 @@ public class CollectionData : IData
         List<T>? result = new();
 
         result = collections.GetValue(this) as List<T>;
-        
-        if(expression is null) return default;
 
-        if (result is not null)           
+        if (expression is null) return default;
+
+        if (result is not null)
             return result.Single(expression.Compile());
 
         throw new InvalidOperationException("Something went wrong.");
@@ -79,9 +71,6 @@ public class CollectionData : IData
                 result?.Add(item);
             }
         }
-
-
-        // lista.add(item)
     }
 
     public IBooking RentVehicle(int vehicleId, int customerId)
@@ -105,10 +94,10 @@ public class CollectionData : IData
         }
     }
 
-    void SeedData() 
+    void SeedData()
     {
         //Customers
-        _persons.Add(new Customer(NextPersonId,"Paul", "Atreides", 234978));
+        _persons.Add(new Customer(NextPersonId, "Paul", "Atreides", 234978));
         _persons.Add(new Customer(NextPersonId, "Leit", "Kynes", 598234));
 
         //Vehicles
@@ -118,17 +107,8 @@ public class CollectionData : IData
 
         //Bookings
         _bookings.Add(new Booking(NextBookingId, _vehicles[1], _persons[1], _vehicles[1].Odometer, 0, DateTime.Now, DateTime.Now, true));
-        _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], _vehicles[2].Odometer, _vehicles[2].Odometer + 300, DateTime.Now, DateTime.Now, false));        
+        _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], _vehicles[2].Odometer, _vehicles[2].Odometer + 300, DateTime.Now, DateTime.Now, false));
     }
-    
-    #region Code for G Assignment
-    /*
-    public IEnumerable<IPerson> GetPersons() => _persons;
-    public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = VehicleStatuses.Available) => _vehicles;
-
-    public IEnumerable<IBooking> GetBookings() => _bookings;
-    */
-    #endregion
 
 
 

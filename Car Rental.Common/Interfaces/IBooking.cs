@@ -1,11 +1,4 @@
-﻿using Car_Rental.Common.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Car_Rental.Common.Interfaces;
+﻿namespace Car_Rental.Common.Interfaces;
 
 public interface IBooking
 {
@@ -17,7 +10,6 @@ public interface IBooking
     DateTime DateRented { get; }
     DateTime DateReturned { get; }
     double TotalCost { get; }
-    //IVehicle Status { get; }
     bool Status { get; set; }
 
     double GetTotalCost();

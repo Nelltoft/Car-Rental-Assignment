@@ -1,10 +1,5 @@
 ﻿using Car_Rental.Common.Extensions;
 using Car_Rental.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Car_Rental.Common.Classes;
 
@@ -24,8 +19,6 @@ public class Booking : IBooking
     public DateTime DateReturned { get; private set; }
 
     public double TotalCost { get; private set; }
-
-    //public IVehicle Status { get; private set; }
 
     public bool Status { get; set; }
 
