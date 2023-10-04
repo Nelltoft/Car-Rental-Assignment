@@ -73,14 +73,29 @@ public class CollectionData : IData
         }
     }
 
-    public IBooking RentVehicle(int vehicleId, int customerId)
+    public void RentVehicle(int vehicleId, int customerId)
     {
-        throw new NotImplementedException();
+        IPerson? customer = Single<IPerson>(c => c.Id == customerId);
+        IVehicle? vehicle = Single<IVehicle>(v => v.Id == vehicleId);
+
+        if (vehicle is not null && customer is not null)
+        {
+            vehicle.Status = VehicleStatuses.Booked;
+            Add<IBooking>(new Booking(NextBookingId, vehicle, customer, vehicle.Odometer, vehicle.Odometer, DateTime.Now, DateTime.Now, true));
+        }
     }
 
-    public IBooking ReturnVehicle(int vehicleId)
+    public void ReturnVehicle(int vehicleId, int distance)
     {
-        throw new NotImplementedException();
+        IVehicle? vehicle = Single<IVehicle>(v => v.Id == vehicleId);
+        IBooking? booking = Single<IBooking>(b => b.Vehicle == vehicle && b.TotalCost < 1);
+        if (vehicle is not null && booking is not null)
+        {
+            vehicle.Status = VehicleStatuses.Available;
+            vehicle.Odometer = vehicle.Odometer + distance;
+            booking.KmReturned = vehicle.Odometer;
+            booking.Status = false;            
+        }
     }
     public VehicleTypes GetVehicleType(string name)
     {

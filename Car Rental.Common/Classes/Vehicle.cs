@@ -20,6 +20,10 @@ public abstract class Vehicle : IVehicle
 
     public VehicleStatuses Status { get; set; }
 
+    public Vehicle()
+    {
+        
+    }
     public Vehicle(int id, string regNo, string make, double odometer, double kmCost, int dayCost, VehicleTypes type, VehicleStatuses status)
         => (Id, RegNO, Make, Odometer, KmCost, DayCost, Type, Status) = (id, regNo, make, odometer, kmCost, dayCost, type, status);
 }
