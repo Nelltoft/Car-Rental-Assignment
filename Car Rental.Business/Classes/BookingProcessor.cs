@@ -10,8 +10,7 @@ public class BookingProcessor
 {
     private readonly IData _db;
 
-    public int InputKmReturned;
-    public int InputId;
+    public int InputCustomerId;
 
     public bool InProgress = false;
     public bool ShowCustomerAlert = false;
@@ -20,6 +19,7 @@ public class BookingProcessor
 
     public Car Vehicle = new();
     public Customer Customer = new();
+    public Booking Booking = new();
 
     public VehicleTypes Type;
 
@@ -106,13 +106,12 @@ public class BookingProcessor
             ShowRentAlert = false;
         }
     }
-    public async Task ReturnVehicle(int vehicleId, int distance)
+    public async Task ReturnVehicle(int vehicleId, double distance)
     {
         InProgress = true;
         await Task.Delay(5000);
         _db.ReturnVehicle(vehicleId, distance);
         InProgress = false;
-        InputKmReturned = 0;
 
     }
 }

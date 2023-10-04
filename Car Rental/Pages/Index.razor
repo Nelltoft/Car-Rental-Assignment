@@ -66,13 +66,13 @@
                     <td>@v.DayCost</td>
                     @if (v.Status == VehicleStatuses.Booked)
                     {
-                        <td><input @bind="bp.InputKmReturned" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
-                        <td><button @onclick="(() => bp.ReturnVehicle(v.Id, bp.InputKmReturned))" type="button" class="btn btn-outline-success">Return</button></td>
+                        <td><input @bind="bp.Booking.KmReturned" type="text" class="form-control" placeholder="0" aria-describedby="addon-wrapping"></td>
+                        <td><button @onclick="(() => bp.ReturnVehicle(v.Id, bp.Booking.KmReturned))" type="button" class="btn btn-outline-success">Return</button></td>
                     }
                     else
                     {
                         <td>
-                            <select @bind="bp.InputId" class="form-select" aria-label="Default select example">
+                            <select @bind="bp.InputCustomerId" class="form-select" aria-label="Default select example">
                                 @foreach (var p in bp.GetCustomers())
                                 {
                                     <option value="@p.Id">@p.LastName @p.FirstName (@p.SocialSecurityNumber)</option>
@@ -80,7 +80,7 @@
                             </select>
                         </td>
                         <td>                         
-                            <button @onclick="(() => bp.RentVehicle(v.Id, bp.InputId))" type="button" class="btn btn-outline-success">Rent</button>
+                            <button @onclick="(() => bp.RentVehicle(v.Id, bp.InputCustomerId))" type="button" class="btn btn-outline-success">Rent</button>
                         </td>                    
                     }
                     @if (v.Status == VehicleStatuses.Available)
@@ -116,8 +116,8 @@
             @foreach (var b in bp.GetBookings())
             {
                 <tr>
-                    <th scope="row">@b.Vehicle.RegNO</th>
-                    <td>@b.Customer.LastName @b.Customer.FirstName (@b.Customer.SocialSecurityNumber)</td>
+                    <th scope="row">@b.Vehicle?.RegNO</th>
+                    <td>@b.Customer?.LastName @b.Customer?.FirstName (@b.Customer?.SocialSecurityNumber)</td>
                     <td>@b.KmRented</td>
                     @if (!b.Status)
                     {

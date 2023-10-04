@@ -85,7 +85,7 @@ public class CollectionData : IData
         }
     }
 
-    public void ReturnVehicle(int vehicleId, int distance)
+    public void ReturnVehicle(int vehicleId, double distance)
     {
         IVehicle? vehicle = Single<IVehicle>(v => v.Id == vehicleId);
         IBooking? booking = Single<IBooking>(b => b.Vehicle == vehicle && b.TotalCost < 1);

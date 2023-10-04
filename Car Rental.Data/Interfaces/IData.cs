@@ -15,6 +15,6 @@ public interface IData
     T? Single<T>(Expression<Func<T, bool>>? expression);
     public void Add<T>(T item);
     public void RentVehicle(int vehicleId, int customerId);
-    public void ReturnVehicle(int vehicleId, int distance);
+    public void ReturnVehicle(int vehicleId, double distance);
     public VehicleTypes GetVehicleType(string name);
 }
